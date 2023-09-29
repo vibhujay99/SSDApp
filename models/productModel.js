@@ -9,6 +9,7 @@ const productSchema = new mongoose.Schema(
     slug: {
       type: String,
       required: true,
+      unique: true, // Ensure product slugs are unique
     },
     description: {
       type: String,
@@ -19,7 +20,7 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     category: {
-      type: mongoose.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: true,
     },
@@ -28,7 +29,7 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     photo: {
-      data: Buffer,
+      data: Buffer, // This might need modification depending on your image storage solution
       contentType: String,
     },
     shipping: {

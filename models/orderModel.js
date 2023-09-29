@@ -4,19 +4,19 @@ const orderSchema = new mongoose.Schema(
   {
     products: [
       {
-        type: mongoose.ObjectId,
+        type: mongoose.Schema.Types.ObjectId, // Corrected the type definition
         ref: "Products",
       },
     ],
     payment: {},
     buyer: {
-      type: mongoose.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "users",
     },
     status: {
       type: String,
       default: "Not Process",
-      enum: ["Not Process", "Processing", "Shipped", "deliverd", "cancel"],
+      enum: ["Not Process", "Processing", "Shipped", "Delivered", "Canceled"], // Corrected enum values
     },
   },
   { timestamps: true }
