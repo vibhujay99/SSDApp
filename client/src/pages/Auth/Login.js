@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import "../../styles/AuthStyles.css";
 import { useAuth } from "../../context/auth";
+import { GoogleLogin } from "react-google-login";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,6 +13,8 @@ const Login = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const clientId =
+    "702658040120-dojqomhk35faq166jfhu6l7timk6o8q9.apps.googleusercontent.com";
 
   // form function
   const handleSubmit = async (e) => {
@@ -38,6 +41,35 @@ const Login = () => {
       toast.error("Something went wrong");
     }
   };
+
+  const onSuccess = async () => {
+    try {
+      const res = await axios.post("/api/v1/auth/login", {
+        email,
+        password,
+      });
+      if (res && res.data.success) {
+        toast.success(res.data && res.data.message);
+        setAuth({
+          ...auth,
+          user: res.data.user,
+          token: res.data.token,
+        });
+        localStorage.setItem("auth", JSON.stringify(res.data));
+        navigate(location.state || "/");
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
+  };
+
+  const onFailure = (res) => {
+    toast.error(res.data.message);
+  };
+
   return (
     <Layout title="Register - Ecommer App">
       <div className="form-container " style={{ minHeight: "90vh" }}>
@@ -82,6 +114,17 @@ const Login = () => {
           <button type="submit" className="btn btn-primary">
             LOGIN
           </button>
+          <h5 className="title">OR</h5>
+          <div id="signInButton">
+            <GoogleLogin
+              clientId={clientId}
+              buttonText="Sign in with Google"
+              onSuccess={onSuccess}
+              onFailure={onFailure}
+              cookiePolicy={"single_host_origin"}
+              isSignedIn={true}
+            />
+          </div>
         </form>
       </div>
     </Layout>

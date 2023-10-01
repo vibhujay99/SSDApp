@@ -6,6 +6,10 @@ import SearchInput from "../Form/SearchInput";
 import useCategory from "../../hooks/useCategory";
 import { useCart } from "../../context/cart";
 import { Badge } from "antd";
+import { GoogleLogout } from "react-google-login";
+
+const clientId =
+  "702658040120-dojqomhk35faq166jfhu6l7timk6o8q9.apps.googleusercontent.com";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
@@ -20,6 +24,17 @@ const Header = () => {
     localStorage.removeItem("auth");
     toast.success("Logout Successfully");
   };
+
+  const handleGoogleLogout = () => {
+    setAuth({
+      ...auth,
+      user: null,
+      token: "",
+    });
+    localStorage.removeItem("auth");
+    toast.success("Logout Successfully");
+  };
+
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary fixed-top">
@@ -117,6 +132,15 @@ const Header = () => {
                         >
                           Logout
                         </NavLink>
+                      </li>
+                      <li>
+                        <div id="signOutButton">
+                          <GoogleLogout
+                            clientId={clientId}
+                            buttonText={"Logout Google"}
+                            onLogoutSuccess={handleGoogleLogout}
+                          />
+                        </div>
                       </li>
                     </ul>
                   </li>
