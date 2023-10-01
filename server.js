@@ -25,6 +25,18 @@ app.use(morgan("dev"));
 // Security headers using Helmet middleware
 app.use(helmet());
 
+// Content Security Policy (CSP)
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        "script-src": ["self", "http://localhost:5000/"],
+      },
+      reportOnly: true,
+    },
+  })
+);
+
 // Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/category", categoryRoutes);
