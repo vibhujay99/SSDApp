@@ -3,6 +3,7 @@ import Layout from "./../components/Layout/Layout";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/ProductDetailsStyles.css";
+import DOMPurify from "dompurify";
 
 const ProductDetails = () => {
   const params = useParams();
@@ -37,12 +38,16 @@ const ProductDetails = () => {
       console.log(error);
     }
   };
+
+    // Sanitize the product._id before using it in the src attribute
+    const sanitizedProductId = DOMPurify.sanitize(product._id);
+
   return (
     <Layout>
       <div className="row container product-details">
         <div className="col-md-6">
           <img
-            src={`/api/v1/product/product-photo/${product._id}`}
+            src={`/api/v1/product/product-photo/${sanitizedProductId}`}
             className="card-img-top"
             alt={product.name}
             height="300"
