@@ -7,6 +7,7 @@ import useCategory from "../../hooks/useCategory";
 import { useCart } from "../../context/cart";
 import { Badge } from "antd";
 import { GoogleLogout } from "react-google-login";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const clientId =
   "702658040120-dojqomhk35faq166jfhu6l7timk6o8q9.apps.googleusercontent.com";
@@ -15,6 +16,8 @@ const Header = () => {
   const [auth, setAuth] = useAuth();
   const [cart] = useCart();
   const categories = useCategory();
+  const location = useLocation();
+  const navigate = useNavigate();
   const handleLogout = () => {
     setAuth({
       ...auth,
@@ -26,12 +29,9 @@ const Header = () => {
   };
 
   const handleGoogleLogout = () => {
-    setAuth({
-      ...auth,
-      user: null,
-      token: "",
-    });
-    localStorage.removeItem("auth");
+    navigate(location.state || "/");
+    console.log("Logged out");
+
     toast.success("Logout Successfully");
   };
 
@@ -133,15 +133,6 @@ const Header = () => {
                           Logout
                         </NavLink>
                       </li>
-                      <li>
-                        <div id="signOutButton">
-                          <GoogleLogout
-                            clientId={clientId}
-                            buttonText={"Logout Google"}
-                            onLogoutSuccess={handleGoogleLogout}
-                          />
-                        </div>
-                      </li>
                     </ul>
                   </li>
                 </>
@@ -152,6 +143,15 @@ const Header = () => {
                     Cart
                   </Badge>
                 </NavLink>
+              </li>
+              <li>
+                <div id="signOutButton">
+                  <GoogleLogout
+                    clientId={clientId}
+                    buttonText={""}
+                    onLogoutSuccess={handleGoogleLogout}
+                  />
+                </div>
               </li>
             </ul>
           </div>
