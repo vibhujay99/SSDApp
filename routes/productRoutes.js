@@ -20,9 +20,17 @@ import formidable from "express-formidable";
 
 const router = express.Router();
 
+const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 10, // Maximum 10 requests per minute per IP address
+  message: 'Too many requests from this IP, please try again later.',
+});
+
 //routes
 router.post(
-  "/create-product",
+  "/create-product", limiter,
   requireSignIn,
   isAdmin,
   formidable(),
@@ -30,7 +38,7 @@ router.post(
 );
 //routes
 router.put(
-  "/update-product/:pid",
+  "/update-product/:pid", limiter,
   requireSignIn,
   isAdmin,
   formidable(),
