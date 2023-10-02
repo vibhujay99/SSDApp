@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import Layout from "./../components/Layout/Layout";
 import { AiOutlineReload } from "react-icons/ai";
 import "../styles/Homepage.css";
+import DOMPurify from "dompurify";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -155,7 +156,7 @@ const HomePage = () => {
             {products?.map((p) => (
               <div className="card m-2" key={p._id}>
                 <img
-                  src={`/api/v1/product/product-photo/${p._id}`}
+                  src={`/api/v1/product/product-photo/${DOMPurify.sanitize(p._id)}`}
                   className="card-img-top"
                   alt={p.name}
                 />

@@ -7,6 +7,7 @@ import { useAuth } from "../../context/auth";
 import moment from "moment";
 import { Select } from "antd";
 const { Option } = Select;
+import DOMPurify from "dompurify";
 
 const AdminOrders = () => {
   const [status, setStatus] = useState([
@@ -92,7 +93,7 @@ const AdminOrders = () => {
                     <div className="row mb-2 p-3 card flex-row" key={p._id}>
                       <div className="col-md-4">
                         <img
-                          src={`/api/v1/product/product-photo/${p._id}`}
+                          src={`/api/v1/product/product-photo/${DOMPurify.sanitize(p._id)}`}
                           className="card-img-top"
                           alt={p.name}
                           width="100px"

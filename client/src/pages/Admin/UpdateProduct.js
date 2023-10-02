@@ -6,6 +6,7 @@ import axios from "axios";
 import { Select } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 const { Option } = Select;
+import DOMPurify from "dompurify";
 
 const UpdateProduct = () => {
   const navigate = useNavigate();
@@ -92,7 +93,7 @@ const UpdateProduct = () => {
       let answer = window.prompt("Are You Sure want to delete this product ? ");
       if (!answer) return;
       const { data } = await axios.delete(
-        `/api/v1/product/delete-product/${id}`
+        `/api/v1/product/delete-product/${DOMPurify.sanitize(id)}`
       );
       toast.success("Product DEleted Succfully");
       navigate("/dashboard/admin/products");
