@@ -7,7 +7,7 @@ import {
   updateProfileController,
   getOrdersController,
   getAllOrdersController,
-  orderStatusController,
+  orderStatusController, validateRegistration,
 } from "../controllers/authController.js";
 import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 
@@ -16,7 +16,8 @@ const router = express.Router();
 
 //routing
 //REGISTER || METHOD POST
-router.post("/register", registerController);
+//validateRegistration (rules for register inputs)
+router.post("/register", validateRegistration,registerController);
 
 //LOGIN || POST
 router.post("/login", loginController);

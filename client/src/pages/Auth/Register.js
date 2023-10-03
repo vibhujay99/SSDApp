@@ -11,20 +11,90 @@ const Register = () => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [answer, setAnswer] = useState("");
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+
+
+  // Input validation function
+  const isEmailValid = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailRegex.test(email);
+  };
+
+  const isPasswordValid = (password) => {
+    return password.length >= 8;
+  };
+
+  const isPhoneValid = (phone) => {
+    const phoneRegex = /^\d{10}$/;
+    return phoneRegex.test(phone);
+  };
+
+  const isNameValid = (name) => {
+    // Name should contain only letters and spaces
+    const nameRegex = /^[A-Za-z\s]+$/;
+    return nameRegex.test(name);
+  };
+
+  const isAddressValid = (address) => {
+    // Basic address validation - allowing letters, numbers, spaces, and common punctuation
+    const addressRegex = /^[A-Za-z0-9\s.,#-]+$/;
+    return addressRegex.test(address);
+  };
+
+  const isAnswerValid = (answer) => {
+    return answer.length >= 3; // Example: Require at least 3 characters
+  };
+
 
   // form function
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Input sanitization
+    const sanitizedEmail = email.trim();
+    const sanitizedName = name.trim();
+    const sanitizedPassword = password.trim();
+    const sanitizedPhone = phone.trim();
+    const sanitizedAddress = address.trim();
+    const sanitizedAnswer = answer.trim();
+
+    if (!isEmailValid(sanitizedEmail)) {
+      toast.error("Invalid email format");
+      return;
+    }
+
+    if (!isPasswordValid(sanitizedPassword)) {
+      toast.error("Invalid password");
+      return;
+    }
+
+    if (!isPhoneValid(sanitizedPhone)) {
+      toast.error("Invalid phone number");
+      return;
+    }
+
+    if(!isAddressValid(sanitizedAddress)){
+      toast.error("Invalid Address")
+    }
+
+    if(!isNameValid(sanitizedName)){
+      toast.error("Invalid Name ")
+    }
+
+    if(!isAnswerValid(sanitizedAnswer)){
+      toast.error("Invalid Answer")
+    }
+
     try {
       const res = await axios.post("/api/v1/auth/register", {
-        name,
-        email,
-        password,
-        phone,
-        address,
-        answer,
+        name:sanitizedName,
+        email: sanitizedEmail,
+        password: sanitizedPassword,
+        phone: sanitizedPhone,
+        address: sanitizedAddress,
+        answer: sanitizedAnswer,
       });
+
       if (res && res.data.success) {
         toast.success(res.data && res.data.message);
         navigate("/login");
