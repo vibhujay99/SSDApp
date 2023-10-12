@@ -2,6 +2,7 @@ import express from "express";
 import colors from "colors";
 import dotenv from "dotenv";
 import morgan from "morgan";
+import checkCSRFToken from "./middlewares/csrfMiddleware.js";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
@@ -23,6 +24,7 @@ const app = express();
 const csrfProtection = csrf({ cookie: true });
 
 //middelwares
+app.use(checkCSRFToken);
 app.use(cors());
 app.use(cookieParser());
 app.use(csrfProtection);
