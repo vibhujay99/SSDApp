@@ -1,6 +1,8 @@
-const crypto = require("crypto");
+import {crypto} from "crypto";
 
-export default function hashData(data) {
+// const crypto = require("crypto");
+
+const hashData = (data) => {
   if (typeof data !== "string") {
     throw new Error("Input data must be a string");
   }
@@ -8,4 +10,6 @@ export default function hashData(data) {
   const hash = crypto.createHash("sha256");
   hash.update(data);
   return hash.digest("hex");
-}
+};
+
+export default hashData;

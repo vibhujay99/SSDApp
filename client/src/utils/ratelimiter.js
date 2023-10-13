@@ -1,4 +1,4 @@
-export default function RateLimiter(handler, limit, interval) {
+const RateLimiter = (handler, limit, interval) => {
     let count = 0;
     let lastReset = Date.now();
   
@@ -17,3 +17,5 @@ export default function RateLimiter(handler, limit, interval) {
       return handler(...args);
     };
   }
+
+export default RateLimiter

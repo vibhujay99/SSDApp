@@ -1,6 +1,9 @@
 import { useState, useContext, createContext } from "react";
-import { hashData } from "../utils/encryption";
-import { RateLimiter } from "../utils/ratelimiter";
+// import { hashData } from "../utils/encryption";
+// import { RateLimiter } from "../utils/ratelimiter";
+import RateLimiter from "../utils/ratelimiter";
+// import hashData from "../utils/encryption";
+import { useMemo } from "react";
 
 const SearchContext = createContext();
 const SearchProvider = ({ children }) => {
@@ -20,13 +23,16 @@ const SearchProvider = ({ children }) => {
 
   const handleSearch = (input) => {
     const sanitizedInput = validateInput(input); // sanitize input
-    const hashedInput = hashData(sanitizedInput); // hash sensitive data
+    // const hashedInput = hashData(sanitizedInput); // hash sensitive data
 
-    return hashedInput;
+    return sanitizedInput;
   };
 
   // Apply rate limiting to the search function
-  const rateLimitedSearch = useMemo(() => RateLimiter(handleSearch, 10, 60000), []);
+  const rateLimitedSearch = useMemo(
+    () => RateLimiter(handleSearch, 10, 60000),
+    []
+  );
 
   return (
     <SearchContext.Provider
